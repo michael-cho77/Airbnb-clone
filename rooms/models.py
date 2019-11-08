@@ -15,6 +15,10 @@ class AbstractItem(core_models.TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.city = str.capitalize(self.city)
+        super().save(*args, **kwargs)
+
 
 class RoomType(AbstractItem):
 
