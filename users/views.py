@@ -1,26 +1,26 @@
 from django.views import View
+from django.views.generic import FormView
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
 from . import forms
 
 
 # Based Class
-class LoginView(View):
+class LoginView(FormView):
 
-    def get(self, request):
-        form = forms.LoginFrom()
-        return render(request, "users/login.html", {"form": form})
+    template_name = "users/login.html"
+    form_class = forms.LoginForm
+    success_url = reverse_lazy("core:home")
 
-    def post(self, request):
-        form = forms.LoginFrom(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get("email")
-            password = form.cleaned_data.get("password")
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect(reverse("core:home"))
-        return render(request, "users/login.html", {"form": form})
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        password = form.cleaned_data.get("password")
+        user = authenticate(self.request, username=email, password=password)
+        if user is not None:
+            login(self.request, user)
+        # return 값은 suuccess_url 로 가기때문에 redirect가 필요하지 않음     
+        return super().form_valid(form) 
 
 
 def log_out(request):
