@@ -8,7 +8,7 @@ from users import models as user_models
 
 class Command(BaseCommand):
 
-    help = "This command creates rooms""
+    help = "This command creates rooms"
 
     def add_arguments(self, parser):
         parser.add_argument(
