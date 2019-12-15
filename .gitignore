@@ -127,3 +127,6 @@ dmypy.json
 Pipfile
 Pipfile.lock
 uploads/
+
+
+node_modules/
