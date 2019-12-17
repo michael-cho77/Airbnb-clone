@@ -23,12 +23,10 @@ class LoginForm(forms.Form):
 
 
 class SignUpForm(forms.ModelForm):
- 
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
-
-    widgets = {
+        widgets = {
             "first_name": forms.TextInput(attrs={"placeholder": "First Name"}),
             "last_name": forms.TextInput(attrs={"placeholder": "Last Name"}),
             "email": forms.EmailInput(attrs={"placeholder": "Email Name"}),
@@ -45,7 +43,9 @@ class SignUpForm(forms.ModelForm):
         email = self.cleaned_data.get("email")
         try:
             models.User.objects.get(email=email)
-            raise forms.ValidationError("User already exists with that email")
+            raise forms.ValidationError(
+                "That email is already taken", code="existing_user"
+            )
         except models.User.DoesNotExist:
             return email
 
@@ -64,4 +64,3 @@ class SignUpForm(forms.ModelForm):
         user.username = email
         user.set_password(password)
         user.save()
-        
