@@ -14,7 +14,7 @@ django-countries = "*"
 django-seed = "*"
 django-dotenv = "*"
 requests = "*"
-faker = "*"
+faker = "==2.0.3"
 
 [requires]
 python_version = "3.7"
