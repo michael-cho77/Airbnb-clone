@@ -7,22 +7,21 @@
 {% block content %}
      
     <div class="min-h-75vh">
-        <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
-
+            <div class="container lg:w-5/12 md:w-1/2 xl:w-1/4 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
         
-            {% include "mixins/user_avatar.html" with user=user_obj %}
+                {% include "mixins/user_avatar.html" with user=user_obj %}
         
-            <div class="flex items-center">
-                <span class="text-3xl mt-1">{{user_obj.first_name}}</span>
-                {% if user_obj.superhost %}
-                    <i class="fas fa-check-circle text-teal-400 ml-1"></i>
-                {% endif %}
-            </div>
-
-            <span class="text-lg mb-5">{{user.bio}}</span>
+                <div class="flex items-center">
+                    <span class="text-3xl mt-1">{{user_obj.first_name}}</span>
+                    {% if user_obj.superhost %}
+                        <i class="fas fa-check-circle text-teal-400 ml-1"></i>
+                    {% endif %}
+                </div>
+        
+                <span class="text-lg mb-5">{{user.bio}}</span>
         
                 {% if user == user_obj %}
-                    <a href="#" class="btn-link">Edit Profile</a>
+                    <a href="{% url 'users:update' %}" class="btn-link">Edit Profile</a>
                 {% endif %}
                     
             </div>
@@ -36,6 +35,5 @@
                     </div>
                 </div>
             {% endif %}
-            
     </div>
 {% endblock content %}
