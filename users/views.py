@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
 from django.core.files.base import ContentFile
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models, mixins
 from django.contrib import messages
@@ -284,3 +285,13 @@ class UpdatePasswordView(
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+
+# 로그인상태가 요구되고 기본적으로 세션삭제 
+# 세션이 존재하지않는다면 KeyError이 발생하고 세션이 생성되도록 구현 
+@login_required
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except KeyError:
+        request.session["is_hosting"] = True
+    return redirect(reverse("core:home"))
