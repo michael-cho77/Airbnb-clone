@@ -109,8 +109,11 @@ class Room(core_models.TimeStampedModel):
 
     # 사진을 가지고오는 메소드 
     def first_photo(self):
-        photo, = self.photos.all()[:1]
-        return photo.file.url
+        try:
+            photo, = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            return None
 
 
     def get_next_four_photos(self):
