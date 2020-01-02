@@ -15,6 +15,7 @@ django-seed = "*"
 django-dotenv = "*"
 requests = "*"
 faker = "==2.0.3"
+gettext = "*"
 
 [requires]
 python_version = "3.7"
