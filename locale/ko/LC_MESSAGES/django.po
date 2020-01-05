@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-04 01:00+0900\n"
+"POT-Creation-Date: 2020-01-05 23:34+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,18 @@ msgstr "봄이 왔습니다."
 #: .\templates\partials\footer.html:7
 msgid "Have a Good day!"
 msgstr "좋은 하루 보내세요"
+
+#: .\templates\partials\nav.html:17
+msgid "Favs"
+msgstr ""
+
+#: .\templates\rooms\room_detail.html:33
+msgid "Remove from Favourites"
+msgstr ""
+
+#: .\templates\rooms\room_detail.html:35
+msgid "Save to Favourites"
+msgstr ""
 
 #: .\templates\rooms\room_list.html:26
 #, python-format
