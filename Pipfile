@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 black = "*"
 flake8 = "*"
-awsebcli = "*"
 
 [packages]
 django = "==2.2.5"
@@ -16,8 +15,8 @@ django-seed = "*"
 django-dotenv = "*"
 requests = "*"
 faker = "==2.0.3"
-psycopg2 = "*"
 sentry-sdk = "==0.13.2"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
