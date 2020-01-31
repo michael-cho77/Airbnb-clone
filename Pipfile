@@ -15,7 +15,7 @@ django-seed = "*"
 django-dotenv = "*"
 requests = "*"
 faker = "==2.0.3"
-sentry-sdk = "==0.13.2"
+sentry-sdk = "==0.14.1"
 psycopg2-binary = "*"
 
 [requires]
