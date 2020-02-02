@@ -8,3 +8,4 @@ class StaticStorage(S3Boto3Storage):
 
 class UploadStorage(S3Boto3Storage):
     location = "uploads/"
+    file_overwrite = False
