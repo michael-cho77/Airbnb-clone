@@ -12,6 +12,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from . import forms, models, mixins
 from django.contrib import messages
+from config import settings
 
 
 # Based Class
@@ -27,7 +28,7 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
         if user is not None:
             login(self.request, user)
         # return 값은 suuccess_url 로 가기때문에 redirect가 필요하지 않음     
-        return super().form_valid(form) 
+        return super().form_valid(form)
 
     def get_success_url(self):
         next_arg = self.request.GET.get("next")
@@ -58,7 +59,6 @@ class SignUpView(mixins.LoggedOutOnlyView, FormView):
     template_name = "users/signup.html"
     form_class = forms.SignUpForm
     success_url = reverse_lazy("core:home")
-    
 
     def form_valid(self, form):
         form.save()
@@ -89,11 +89,17 @@ class GithubException(Exception):
 
 
 def github_login(request):
-    client_id = os.environ.get("GH_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
-    return redirect(
-        f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
-    )
+    client_id = "30c3ae3cb9e1b8c5da3c"
+    if settings.DEBUG is True:
+        redirect_uri = "http://airbnb-clone.cbfai3acf3.ap-northeast-2.elasticbeanstalk.com/users/login/github/callback"
+        return redirect(
+            f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
+            )
+    else:
+        redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
+        return redirect(
+            f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
+        )
 
 
 class GithubException(Exception):
@@ -102,8 +108,8 @@ class GithubException(Exception):
 
 def github_callback(request):
     try:
-        client_id = os.environ.get("GH_ID")
-        client_secret = os.environ.get("GH_SECRET")
+        client_id = "30c3ae3cb9e1b8c5da3c"
+        client_secret = "848d0ff684510373ff610d21c17e085ad5915206"
         code = request.GET.get("code", None)
         if code is not None:
             token_request = requests.post(

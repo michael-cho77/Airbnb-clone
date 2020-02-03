@@ -75,6 +75,7 @@ class User(AbstractUser):
         return reverse("users:profile", kwargs={"pk": self.pk})
 
     def verify_email(self):
+        '''
         if self.email_verified is False:
             secret = uuid.uuid4().hex[:20]
             self.email_secret = secret
@@ -91,3 +92,6 @@ class User(AbstractUser):
             )
             self.save()
         return
+        '''
+        pass
+        

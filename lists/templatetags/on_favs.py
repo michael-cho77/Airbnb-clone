@@ -8,7 +8,11 @@ register = template.Library()
 def on_favs(context, room):
     #context를 통해서 user정보 확인 
     user = context.request.user
-    the_list = list_models.List.objects.get_or_none(
-        user=user, name="My Favourites Houses"
-    )
-    return room in the_list.rooms.all() 
+    if user.is_authenticated:
+        the_list = list_models.List.objects.get_or_none(user=user)
+        if the_list is not None:
+            return room in the_list.rooms.all()
+        else:
+            return False
+    else:
+        return False
