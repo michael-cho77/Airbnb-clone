@@ -27,7 +27,7 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
-        # return 값은 suuccess_url 로 가기때문에 redirect가 필요하지 않음     
+        # return 값은 suuccess_url 로 가기때문에 redirect가 필요하지 않음
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -42,7 +42,6 @@ def log_out(request):
     messages.info(request, f"See you later")
     logout(request)
     return redirect(reverse("core:home"))
-
 
 
 """
@@ -89,12 +88,12 @@ class GithubException(Exception):
 
 
 def github_login(request):
-    client_id = "30c3ae3cb9e1b8c5da3c"
-    if settings.DEBUG is True:
+    client_id = os.environ.get("GH_ID")
+    if settings.DEBUG is False:
         redirect_uri = "http://airbnb-clone.cbfai3acf3.ap-northeast-2.elasticbeanstalk.com/users/login/github/callback"
         return redirect(
             f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
-            )
+        )
     else:
         redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
         return redirect(
@@ -108,8 +107,8 @@ class GithubException(Exception):
 
 def github_callback(request):
     try:
-        client_id = "30c3ae3cb9e1b8c5da3c"
-        client_secret = "848d0ff684510373ff610d21c17e085ad5915206"
+        client_id = os.environ.get("GH_ID")
+        client_secret = os.environ.get("GH_SECRET")
         code = request.GET.get("code", None)
         if code is not None:
             token_request = requests.post(
@@ -130,6 +129,7 @@ def github_callback(request):
                     },
                 )
                 profile_json = profile_request.json()
+                print(f"깃허브버전 : {profile_json}")
                 username = profile_json.get("login", None)
                 if username is not None:
                     name = profile_json.get("name")
@@ -166,10 +166,16 @@ def github_callback(request):
 
 def kakao_login(request):
     client_id = os.environ.get("KAKAO_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
-    return redirect(
-        f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-    )
+    if settings.DEBUG is False:
+        redirect_uri = "http://airbnb-clone.cbfai3acf3.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
+        return redirect(
+            f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+        )
+    else:
+        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        return redirect(
+            f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+        )
 
 
 class KakaoException(Exception):
@@ -180,27 +186,31 @@ def kakao_callback(request):
     try:
         code = request.GET.get("code")
         client_id = os.environ.get("KAKAO_ID")
-        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        if settings.DEBUG is False:
+            redirect_uri = "http://airbnb-clone.cbfai3acf3.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
+        else:
+            redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
         token_request = requests.get(
             f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
         )
-        print(token_request.json()) #access 확인용 
+        print(token_request.json())  # access 확인용
         token_json = token_request.json()
         error = token_json.get("error", None)
         if error is not None:
             raise KakaoException("Can't get authorization code.")
         access_token = token_json.get("access_token")
         profile_request = requests.get(
-            "https://kapi.kakao.com/v1/user/me",
+            "https://kapi.kakao.com/v2/user/me",
             headers={"Authorization": f"Bearer {access_token}"},
         )
         profile_json = profile_request.json()
-        email = profile_json.get("kaccount_email", None)
+        kakao_account = profile_json.get("kakao_account")
+        email = kakao_account.get("email", None)
         if email is None:
             raise KakaoException("Please also give me your email")
-        properties = profile_json.get("properties")
-        nickname = properties.get("nickname")
-        profile_image = properties.get("profile_image")
+        profile = kakao_account.get("profile")
+        nickname = profile.get("nickname")
+        profile_image = kakao_account.get("profile_image_url")
 
         # 유저는 존재하지만 카카오톡을 통해 로그인하지 않는 경우
         try:
@@ -230,18 +240,16 @@ def kakao_callback(request):
         return redirect(reverse("users:login"))
 
 
-
 class UserProfileView(DetailView):
 
     model = models.User
     context_object_name = "user_obj"
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["hello"] = "Hello" 
+        context["hello"] = "Hello"
         return context
-    
+
 
 class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
 
@@ -294,8 +302,9 @@ class UpdatePasswordView(
     def get_success_url(self):
         return self.request.user.get_absolute_url()
 
-# 로그인상태가 요구되고 기본적으로 세션삭제 
-# 세션이 존재하지않는다면 KeyError이 발생하고 세션이 생성되도록 구현 
+
+# 로그인상태가 요구되고 기본적으로 세션삭제
+# 세션이 존재하지않는다면 KeyError이 발생하고 세션이 생성되도록 구현
 @login_required
 def switch_hosting(request):
     try:
