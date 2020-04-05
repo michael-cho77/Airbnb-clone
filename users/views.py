@@ -204,13 +204,14 @@ def kakao_callback(request):
             headers={"Authorization": f"Bearer {access_token}"},
         )
         profile_json = profile_request.json()
+        # print(f"카카오용 profile_json : {profile_json}")
         kakao_account = profile_json.get("kakao_account")
         email = kakao_account.get("email", None)
         if email is None:
             raise KakaoException("Please also give me your email")
         profile = kakao_account.get("profile")
         nickname = profile.get("nickname")
-        profile_image = kakao_account.get("profile_image_url")
+        profile_image = profile.get("profile_image_url")
 
         # 유저는 존재하지만 카카오톡을 통해 로그인하지 않는 경우
         try:
@@ -227,8 +228,10 @@ def kakao_callback(request):
             )
             user.set_unusable_password()
             user.save()
+            # 프로필 사진이 있는지 확인
             if profile_image is not None:
                 photo_request = requests.get(profile_image)
+                # ContentFile()로 인하여 파일에 담기고  이 파일은 avater에 저장됨
                 user.avatar.save(
                     f"{nickname}-avatar", ContentFile(photo_request.content)
                 )
