@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def on_favs(context, room):
-    #context를 통해서 user정보 확인 
+    # context를 통해서 user정보 확인
     user = context.request.user
     if user.is_authenticated:
         the_list = list_models.List.objects.get_or_none(user=user)
