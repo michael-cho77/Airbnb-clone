@@ -66,16 +66,22 @@ class Reservation(core_models.TimeStampedModel):
             start = self.check_in
             end = self.check_out
             difference = end - start
-            # start와 end 사이에 booked_day가 있는가 
+            # start와 end 사이에 booked_day가 있는가
             existing_booked_day = BookedDay.objects.filter(
                 day__range=(start, end)
             ).exists()
             if not existing_booked_day:
-                # 해당 기간에 예약되어있지 않으면 reservation에 저장 
+                # 해당 기간에 예약되어있지 않으면 reservation에 저장
                 super().save(*args, **kwargs)
                 for i in range(difference.days + 1):
-                    # 시작일부터 i일까지 더한기간을 day에 저장(시작일 15일 예약일 2 day = 17) 
+                    # 시작일부터 i일까지 더한기간을 day에 저장(시작일 15일 예약일 2 day = 17)
                     day = start + datetime.timedelta(days=i)
                     BookedDay.objects.create(day=day, reservation=self)
                 return
         return super().save(*args, **kwargs)
+
+    def get_total_price(self):
+        start = self.check_in
+        end = self.check_out
+        difference = end - start
+        return difference.days * self.room.price
