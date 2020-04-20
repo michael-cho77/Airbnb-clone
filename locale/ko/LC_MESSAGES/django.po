@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-05 23:40+0900\n"
+"POT-Creation-Date: 2020-04-20 18:28+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,45 +22,66 @@ msgstr ""
 msgid "Search By City"
 msgstr "도시 검색"
 
+#: .\templates\lists\list_detail.html:12
+msgid "Your Favourites"
+msgstr "당신의 즐겨찾기"
+
 #: .\templates\partials\footer.html:5
 msgid "Spring is Comming"
 msgstr "봄이 왔습니다."
 
 #: .\templates\partials\footer.html:7
 msgid "Have a Good day!"
-msgstr "좋은 하루 보내세요"
+msgstr "좋은하루 보내세요"
 
-#: .\templates\partials\nav.html:8
+#: .\templates\partials\nav.html:9
 msgid "Stop hosting"
-msgstr "호스트 해제"
+msgstr "호스트 모드 해제"
 
-#: .\templates\partials\nav.html:10
+#: .\templates\partials\nav.html:11
 msgid "Start hosting"
-msgstr "호스트 시작"
+msgstr "호스트 모드 시작"
 
-#: .\templates\partials\nav.html:15
+#: .\templates\partials\nav.html:16
 msgid "Create Room"
-msgstr "방 생성하기"
+msgstr "방 만들기"
 
-#: .\templates\partials\nav.html:17
+#: .\templates\partials\nav.html:18
+msgid "Reservations"
+msgstr "예약정보"
+
+#: .\templates\partials\nav.html:19
 msgid "Favs"
 msgstr "즐겨찾기"
 
-#: .\templates\partials\nav.html:18
+#: .\templates\partials\nav.html:20
 msgid "Profile"
-msgstr "개인프로필"
+msgstr "내 프로필"
 
-#: .\templates\partials\nav.html:19
+#: .\templates\partials\nav.html:21
 msgid "Log out"
 msgstr "로그아웃"
 
-#: .\templates\partials\nav.html:22
+#: .\templates\partials\nav.html:24
 msgid "Log in"
 msgstr "로그인"
 
-#: .\templates\partials\nav.html:23
+#: .\templates\partials\nav.html:25
 msgid "Sign up"
 msgstr "회원가입"
+
+#: .\templates\reservations\reservation_list.html:12
+msgid "Reservation List"
+msgstr "예약된 방 목록"
+
+#: .\templates\reservations\reservation_list.html:18
+msgid "No Reservation Room"
+msgstr "예약된 방이 없습니다."
+
+#: .\templates\reservations\reservation_list.html:34
+#, python-format
+msgid "page %(cp)s of %(tp)s"
+msgstr "%(tp)s 페이지 중 %(cp)s 페이지"
 
 #: .\templates\rooms\room_detail.html:33
 msgid "Remove from Favourites"
@@ -68,49 +89,45 @@ msgstr "즐겨찾기 제거"
 
 #: .\templates\rooms\room_detail.html:35
 msgid "Save to Favourites"
-msgstr "즐겨찾기 추가"
+msgstr "즐겨찾기 추가 "
 
 #: .\templates\rooms\room_list.html:26
 #, python-format
 msgid "Page %(current_page)s of %(total_pages)s"
-msgstr "페이지 %(current_page)s 의 %(total_pages)s"
+msgstr "%(total_pages)s 페이지 중 %(current_page)s 페이지"
 
 #: .\users\mixins.py:14
 msgid "Can't go there"
-msgstr "비정상적인 경로접근입니다."
+msgstr "비정상적인 경로접근입니다"
 
-#: .\users\models.py:23
+#: .\users\models.py:22
 msgid "Male"
 msgstr "남성"
 
-#: .\users\models.py:24
+#: .\users\models.py:23
 msgid "Female"
 msgstr "여성"
 
-#: .\users\models.py:25
+#: .\users\models.py:24
 msgid "Other"
-msgstr "그외"
+msgstr "기타"
 
-#: .\users\models.py:32
+#: .\users\models.py:31
 msgid "English"
 msgstr "영어"
 
-#: .\users\models.py:33
+#: .\users\models.py:32
 msgid "Korean"
 msgstr "한국어"
 
-#: .\users\models.py:53
+#: .\users\models.py:52
 msgid "gender"
 msgstr "성별"
 
-#: .\users\models.py:55
+#: .\users\models.py:54
 msgid "bio"
 msgstr "자기소개"
 
-#: .\users\models.py:58
+#: .\users\models.py:57
 msgid "language"
-msgstr "언어"
-
-#: .\users\models.py:87
-msgid "Verify Airbnb Account"
-msgstr "Airbnb계정확인"
+msgstr "언어선택"
