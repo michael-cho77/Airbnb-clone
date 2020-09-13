@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db import models    
+from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
@@ -109,14 +109,13 @@ class Room(core_models.TimeStampedModel):
             return round(all_ratings / len(all_reviews), 2)
         return 0
 
-    # 사진을 가지고오는 메소드 
+    # 사진을 가지고오는 메소드
     def first_photo(self):
         try:
-            photo, = self.photos.all()[:1]
+            (photo,) = self.photos.all()[:1]
             return photo.file.url
         except ValueError:
             return None
-
 
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
@@ -128,7 +127,6 @@ class Room(core_models.TimeStampedModel):
             return "1 bed"
         else:
             return f"{self.beds} beds"
-
 
     def get_calendars(self):
         now = timezone.now()
